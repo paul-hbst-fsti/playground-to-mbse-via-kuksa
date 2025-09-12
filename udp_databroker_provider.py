@@ -250,6 +250,7 @@ async def subscribe_and_forward_commands(client, command_path, udp_dst):
             finally:
                 transport.close()
             logging.info("Forwarded TARGET %s=%d to UDP %s", path, pos, udp_dst)
+
 async def main():
     args = build_args()
     logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.INFO),
