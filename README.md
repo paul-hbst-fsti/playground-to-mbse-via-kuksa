@@ -16,4 +16,5 @@ c804wg0wsso8kokgwss0w0ks.116.203.177.174.sslip.io:55555 kuksa.val.v2.VAL/GetValu
 
 
 
-
+modelica start command:
+python udp_modelica_placeholder.py --listen 0.0.0.0 --port 50001
