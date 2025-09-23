@@ -163,7 +163,7 @@ class AngleReceiver(asyncio.DatagramProtocol):
         logging.info("Angle UDP listening on %s", sock)
 
     def datagram_received(self, data: bytes, addr):
-        print("received")
+        print("Response from MBSE: ", data)
         try:
             if self.fmt == "float32le":
                 if len(data) < 4: return
@@ -179,8 +179,6 @@ class AngleReceiver(asyncio.DatagramProtocol):
         except Exception as e:
             logging.exception("Failed to parse angle from %s: %s", addr, e)
             return
-        print("value")
-        print(value)
 
         asyncio.create_task(self._publish_angle(value))
 
@@ -230,7 +228,7 @@ async def subscribe_and_forward_commands(client, command_path, udp_dst):
     # works with kuksa-client ≥ 0.5; falls back to .subscribe(...)
     subscribe_v2 = getattr(client, "subscribe_v2", None)
     aiter = subscribe_v2(entries=entries) if callable(subscribe_v2) else client.subscribe(entries=entries)
-
+    print("here")
     async for updates in aiter:
         for path, val in _iter_updates(updates):
             if path != command_path or val is None:
@@ -281,7 +279,6 @@ async def main():
         lambda: AngleReceiver(client, args.angle_path, args.angle_format),
         local_addr=(angle_host, angle_port),
     )
-
     # Start subscription task for actuator target commands
     udp_cmd_dst = args.udp_command_send
     sub_task = asyncio.create_task(subscribe_and_forward_commands(client, args.command_path, udp_cmd_dst))
