@@ -9,6 +9,7 @@ python udp_databroker_provider.py \
   --udp-command-send 127.0.0.1:50001 \
   --angle-format float32le
 
+python udp_databroker_provider_v3.py config.yaml
 
 test command:
 
