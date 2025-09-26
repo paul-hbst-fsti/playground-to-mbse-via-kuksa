@@ -1,0 +1,32 @@
+
+broker:
+  host: c804wg0wsso8kokgwss0w0ks.116.203.177.174.sslip.io
+  port: 55555
+  # token: "optional-jwt"
+  tls:
+    enabled: false
+    # root_ca: "/path/to/ca.pem"
+    # server_name: "localhost"
+
+signals:
+  # Listen on UDP → publish CURRENT to Databroker
+  - path: Vehicle.Cabin.Door.Row1.PassengerSide.Window.Position
+    dtype: uint8             # expects 0..255, will emit 1 byte; use "bool" for 0/1
+    udp_listen: "0.0.0.0:50000"
+
+  # Subscribe TARGET from Databroker → send to UDP, and provide actuation
+  - path: Vehicle.Cabin.Door.Row1.PassengerSide.Window.Position
+    dtype: uint8             # expects 0..255, will emit 1 byte; use "bool" for 0/1
+    udp_send: "127.0.0.1:50001"
+    provide_actuation: true
+
+  - path: Vehicle.Cabin.Door.Row1.DriverSide.Window.Position
+    dtype: uint8             # expects 0..255, will emit 1 byte; use "bool" for 0/1
+    udp_listen: "0.0.0.0:50002"
+
+  # Subscribe TARGET from Databroker → send to UDP, and provide actuation
+  - path: Vehicle.Cabin.Door.Row1.DriverSide.Window.Position
+    dtype: uint8             # expects 0..255, will emit 1 byte; use "bool" for 0/1
+    udp_send: "127.0.0.1:50003"
+    provide_actuation: true
+
